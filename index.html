@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+  <title>TESTE</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+
+<body>
+
+  <div class="rule-top">
+    <button type="button" name="button" id="button">teste</button>
+  </div>
+
+  <div class="rule-left">
+  </div>
+
+  <div class="x draggable" id="drag-1">
+  </div>
+
+
+  <div class="y draggable" id="drag-2">
+  </div>
+
+
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="interact.min.js"></script>
+  <script type="text/javascript">
+
+
+  $("#button").click(function() {
+    var clonedDiv = $('#drag-1').clone();
+    clonedDiv.attr("id", "drag-3");
+    $('#drag-1').after(clonedDiv);
+  })
+
+  </script>
+  <script type="text/javascript">
+  // target elements with the "draggable" class
+interact('.draggable')
+.draggable({
+  // enable inertial throwing
+  inertia: true,
+  // keep the element within the area of it's parent
+  restrict: {
+    restriction: "parent",
+    endOnly: true,
+    elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+  },
+  // enable autoScroll
+  autoScroll: true,
+
+  // call this function on every dragmove event
+  onmove: dragMoveListener,
+  // call this function on every dragend event
+  onend: function (event) {
+    var textEl = event.target.querySelector('p');
+
+    textEl && (textEl.textContent =
+      'moved a distance of '
+      + (Math.sqrt(event.dx * event.dx +
+                   event.dy * event.dy)|0) + 'px');
+  }
+})
+.on('move', function (event) {
+
+  var interaction = event.interaction;
+
+  // if the pointer was moved while being held down
+  // and an interaction hasn't started yet
+  if (interaction.pointerIsDown && !interaction.interacting() && event.currentTarget.className.indexOf('drag-element-source') !== -1) {
+
+    var original = event.currentTarget;
+
+    // create a clone of the currentTarget element
+    var clone = event.currentTarget.cloneNode(true);
+
+    // Remove CSS class using JS only (not jQuery or jQLite) - http://stackoverflow.com/a/2155786/4972844
+    clone.className = clone.className.replace(/\bdrag-element-source\b/,'');
+
+    // insert the clone to the page
+    // TODO: position the clone appropriately
+    document.getElementById('form-container').appendChild(clone);
+
+    // start a drag interaction targeting the clone
+    interaction.start({ name: 'drag' }, event.interactable, clone);
+
+  }
+
+});
+
+function dragMoveListener (event) {
+  var target = event.target,
+      // keep the dragged position in the data-x/data-y attributes
+      x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+      y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+  // translate the element
+  target.style.webkitTransform =
+  target.style.transform =
+    'translate(' + x + 'px, ' + y + 'px)';
+
+  // update the posiion attributes
+  target.setAttribute('data-x', x);
+  target.setAttribute('data-y', y);
+}
+
+// this is used later in the resizing and gesture demos
+window.dragMoveListener = dragMoveListener;
+  </script>
+</body>
+</html>
