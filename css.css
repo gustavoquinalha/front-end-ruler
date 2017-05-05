@@ -8,48 +8,39 @@ html {
   position: relative;
   overflow: hidden;
 }
+
 .rule-top {
   height: 20px;
   background: #555555;
   width: 100%;
   position: absolute;
-  top: 0
+  top: 0;;
+  opacity: .5;
 }
 .rule-left {
   width: 20px;
   background: #555555;
   height: 100%;
   position: absolute;
-  top: 0
+  left: 0;
+  opacity: .5;
 }
-.x {
-  width: 500%;
+.y {
+  width: 100%;
   height: 1px;
   position: absolute;
   border:1px dashed red;
   box-sizing: border-box;
-  top: 50%;
-  bottom: 50%;
+  cursor: move;
+  top: 20px
 }
-.y {
+
+.x {
   height: 100%;
   width: 2px;
   border:1px dashed blue;
   box-sizing: border-box;
   position: absolute;
-  right: 50%;
-}
-
-
-
-
-
-.x-t {
-  width: 500%;
-  height: 1px;
-  position: absolute;
-  border:1px dashed red;
-  box-sizing: border-box;
-  top: 50%;
-  bottom: 50%;
+  cursor: move;
+  left: 20px;
 }

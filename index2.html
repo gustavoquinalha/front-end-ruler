@@ -11,78 +11,58 @@
 <body>
 
 
+    <div class="rule-top">
+    </div>
 
-    <div id="form-container" style="width: 100%; height: 100%;">
-      <div class="x-t drag-element-source drag-element">
+    <div class="rule-left">
+    </div>
 
-      </div>
-
+    <div class="x draggable draggable1" id="x">
 
     </div>
 
 
+    <div class="y draggable draggable2">
+    </div>
+
+
+<button type="button" id="btn" name="button" style="position: absolute; top: 20px; left: 20px">Clear all</button>
+
+
 
   <script type="text/javascript" src="jquery.js"></script>
-  <script type="text/javascript" src="interact.min.js"></script>
-  <script type="text/javascript">
-  window.interact('.drag-element').draggable({
-    'manualStart' : true,
-    'restrict' : {
-      'restriction' : "#drag-container",
-      'endOnly' : true,
-      'elementRect' : {
-        'top' : 0,
-        'left' : 0,
-        'bottom' : 1,
-        'right' : 1
-      }
-    },
-    'onmove' : function (event) {
+  <script type="text/javascript" src="jquery-ui.js"></script>
+<script>
 
-      var target = event.target;
 
-      var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-      var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-      // translate the element
-      target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-
-      // update the posiion attributes
-      target.setAttribute('data-x', x);
-      target.setAttribute('data-y', y);
-
-    },
-    'onend' : function (event) {
-
-      console.log(event);
-
-    }
-  }).on('move', function (event) {
-
-    var interaction = event.interaction;
-
-    // if the pointer was moved while being held down
-    // and an interaction hasn't started yet
-    if (interaction.pointerIsDown && !interaction.interacting() && event.currentTarget.className.indexOf('drag-element-source') !== -1) {
-
-      var original = event.currentTarget;
-
-      // create a clone of the currentTarget element
-      var clone = event.currentTarget.cloneNode(true);
-
-      // Remove CSS class using JS only (not jQuery or jQLite) - http://stackoverflow.com/a/2155786/4972844
-      clone.className = clone.className.replace(/\bdrag-element-source\b/,'');
-
-      // insert the clone to the page
-      // TODO: position the clone appropriately
-      document.getElementById('form-container').appendChild(clone);
-
-      // start a drag interaction targeting the clone
-      interaction.start({ name: 'drag' }, event.interactable, clone);
-
-    }
-
+$(document).ready(function() {
+  $(' .draggable1 ').draggable({
+    cursor: 'move',
+    axis: "x",
+    helper: "clone",
   });
-  </script>
+  $('.draggable1').draggable({helper: "clone"});
+  $('.draggable1').bind('dragstop', function(event, ui) {
+      $(this).after($(ui.helper).clone().draggable());
+  });
+
+
+
+  $( " .draggable2" ).draggable({
+   cursor: 'move',
+    axis: "y",
+    helper: "clone"
+  });
+  $('.draggable2').draggable({helper: "clone"});
+  $('.draggable2').bind('dragstop', function(event, ui) {
+      $(this).after($(ui.helper).clone().draggable());
+  });
+
+  $("button").click(function(){
+    $( ".draggable" ).remove();
+  })
+});
+
+</script>
 </body>
 </html>

@@ -11,7 +11,6 @@
 <body>
 
   <div class="rule-top">
-    <button type="button" name="button" id="button">teste</button>
   </div>
 
   <div class="rule-left">
@@ -21,8 +20,10 @@
   </div>
 
 
+
   <div class="y draggable" id="drag-2">
   </div>
+
 
 
   <script type="text/javascript" src="jquery.js"></script>
@@ -33,7 +34,7 @@
   $("#button").click(function() {
     var clonedDiv = $('#drag-1').clone();
     clonedDiv.attr("id", "drag-3");
-    $('#drag-1').after(clonedDiv);
+    $('#drag-1').after("clonedDiv");
   })
 
   </script>
@@ -63,32 +64,6 @@ interact('.draggable')
       + (Math.sqrt(event.dx * event.dx +
                    event.dy * event.dy)|0) + 'px');
   }
-})
-.on('move', function (event) {
-
-  var interaction = event.interaction;
-
-  // if the pointer was moved while being held down
-  // and an interaction hasn't started yet
-  if (interaction.pointerIsDown && !interaction.interacting() && event.currentTarget.className.indexOf('drag-element-source') !== -1) {
-
-    var original = event.currentTarget;
-
-    // create a clone of the currentTarget element
-    var clone = event.currentTarget.cloneNode(true);
-
-    // Remove CSS class using JS only (not jQuery or jQLite) - http://stackoverflow.com/a/2155786/4972844
-    clone.className = clone.className.replace(/\bdrag-element-source\b/,'');
-
-    // insert the clone to the page
-    // TODO: position the clone appropriately
-    document.getElementById('form-container').appendChild(clone);
-
-    // start a drag interaction targeting the clone
-    interaction.start({ name: 'drag' }, event.interactable, clone);
-
-  }
-
 });
 
 function dragMoveListener (event) {
